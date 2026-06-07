@@ -15,8 +15,8 @@ public class DcMotorPractice1 extends OpMode {
 
     @Override
     public void loop() {
-        double rightMotorSpeed = gamepad1.right_stick_y;
-        double leftMotorSpeed = gamepad1.left_stick_y;
+        double rightMotorSpeed = -gamepad1.right_stick_y;
+        double leftMotorSpeed = -gamepad1.left_stick_y;
 
         bench1.setLeftMotorSpeed(leftMotorSpeed);
         bench1.setRightMotorSpeed(rightMotorSpeed);

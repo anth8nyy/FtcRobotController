@@ -19,6 +19,7 @@ public class TestBench1 {
         //initializing right motor
         rightMotor = hwMap.get(DcMotor.class,"rightMotor");
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
         rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
