@@ -24,6 +24,7 @@ public class TestBench1 {
     }
 
     public void setLeftMotorSpeed(double leftMotorSpeed){
+
         leftMotor.setPower(leftMotorSpeed);
     }
 
@@ -32,6 +33,7 @@ public class TestBench1 {
     }
 
     public double getRightTick(){
+
         return rightMotor.getCurrentPosition()/rightTick;
     }
 
