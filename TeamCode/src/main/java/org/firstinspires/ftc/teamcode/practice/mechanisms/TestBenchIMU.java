@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanisms;
+package org.firstinspires.ftc.teamcode.practice.mechanisms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,7 +13,7 @@ public class TestBenchIMU {
 
     public void init(HardwareMap hwMap){
         imu = hwMap.get(IMU.class,"imu");
-        dcMotor = hwMap.get(DcMotor.class,"motor");
+        motor = hwMap.get(DcMotor.class,"motor");
 
 
         RevHubOrientationOnRobot revOrientation = new RevHubOrientationOnRobot(
