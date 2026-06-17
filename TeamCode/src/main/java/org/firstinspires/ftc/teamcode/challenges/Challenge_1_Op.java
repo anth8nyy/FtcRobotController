@@ -18,6 +18,7 @@ public class Challenge_1_Op extends OpMode {
 
     @Override
     public void loop() {
-        drive.speedMultiplier(gamepad1.left_stick_y,gamepad1.left_stick_x,gamepad1.right_trigger);
+        drive.speedMultiplier(gamepad1.left_stick_y,-gamepad1.right_stick_x,gamepad1.right_trigger);
+
     }
 }
