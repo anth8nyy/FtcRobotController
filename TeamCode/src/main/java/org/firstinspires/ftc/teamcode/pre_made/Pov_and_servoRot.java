@@ -21,7 +21,7 @@ public class Pov_and_servoRot extends OpMode {
         if (gamepad1.a) {
             servo.setServoRot(1.0);
         } else {
-            servo.setServoRot(0.5);
+            servo.setServoRot(0.0);
         }
     }
 }
