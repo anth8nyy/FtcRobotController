@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples;
+package org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.driveTrains;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,7 +16,7 @@ public class PovDriveSample {
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
     }
 
-    public void tankDrive(double stickY,double stickX){
+    public void tankDrive(double stickY,double stickX ,double speedMultiplier){
         double left;
         double right;
         double drive;
@@ -26,8 +26,8 @@ public class PovDriveSample {
         drive = stickY;
         turn  = stickX;
 
-        left   = Range.clip(drive + turn, -0.7, 0.7) ;
-        right   = Range.clip(drive - turn, -0.7, 0.7) ;
+        left   = drive + turn;
+        right   = drive - turn;
 
 
         // Normalize the values so neither exceed +/- 1.0
@@ -37,7 +37,7 @@ public class PovDriveSample {
             left /= max;
             right /= max;
         }
-        leftDrive.setPower(left);
-        rightDrive.setPower(right);
+        leftDrive.setPower(left * speedMultiplier);
+        rightDrive.setPower(right * speedMultiplier);
     }
 }

@@ -5,19 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.ServoRotEx;
+import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.driveTrains.PovDriveSample;
 
 @Disabled
 @TeleOp
 public class Pov_and_servoRot extends OpMode {
     ServoRotEx servo = new ServoRotEx();
+    PovDriveSample drive = new PovDriveSample();
 
     @Override
     public void init() {
         servo.init(hardwareMap);
+        drive.init(hardwareMap);
     }
 
     @Override
     public void loop() {
+        drive.tankDrive(gamepad1.left_stick_y, gamepad1.right_stick_x, 0.7); // speed multiplier is the max speed I want my robot to have
         if (gamepad1.a) {
             servo.setServoRot(1.0);
         } else {
