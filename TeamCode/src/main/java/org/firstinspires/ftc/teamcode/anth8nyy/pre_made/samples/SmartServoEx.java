@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples;
 
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
-public class ServoRotEx {
+public class SmartServoEx {
     CRServo servoRot;
     public void init(HardwareMap hardwareMap){
         servoRot = hardwareMap.get(CRServo.class,"Servo_Rot");

@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples;
 
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class ServoPosEx {
+public class Servo180Ex {
     private Servo servoPo;
 
     public void init(HardwareMap hwMap){

@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.ServoRotEx;
+import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.SmartServoEx;
 import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.driveTrains.PovDriveSample;
 
 @Disabled
 @TeleOp
 public class Pov_and_servoRot extends OpMode {
-    ServoRotEx servo = new ServoRotEx();
+    SmartServoEx servo = new SmartServoEx();
     PovDriveSample drive = new PovDriveSample();
 
     @Override

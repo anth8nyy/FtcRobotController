@@ -5,13 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.driveTrains.PovDriveSample;
-import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.ServoPosEx;
+import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.Servo180Ex;
 
 @Disabled
 @TeleOp
 public class Pov_and_servoPo extends OpMode {
     PovDriveSample drive = new PovDriveSample();
-    ServoPosEx servo = new ServoPosEx();
+    Servo180Ex servo = new Servo180Ex();
     @Override
     public void init() {
         drive.init(hardwareMap);
