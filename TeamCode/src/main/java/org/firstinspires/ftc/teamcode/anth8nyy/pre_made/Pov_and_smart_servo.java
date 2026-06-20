@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.driveTrains.PovD
 
 @Disabled
 @TeleOp
-public class Pov_and_servoRot extends OpMode {
+public class Pov_and_smart_servo extends OpMode {
     SmartServoEx servo = new SmartServoEx();
     PovDriveSample drive = new PovDriveSample();
 

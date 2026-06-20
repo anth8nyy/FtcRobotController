@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.Servo180Ex;
 
 @Disabled
 @TeleOp
-public class Pov_and_servoPo extends OpMode {
+public class Pov_and_servo180 extends OpMode {
     PovDriveSample drive = new PovDriveSample();
     Servo180Ex servo = new Servo180Ex();
     @Override
