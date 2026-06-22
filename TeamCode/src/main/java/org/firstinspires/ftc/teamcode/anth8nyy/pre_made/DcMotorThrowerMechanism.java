@@ -17,6 +17,11 @@ public class DcMotorThrowerMechanism extends OpMode {
 
     @Override
     public void loop() {
-        thrower.update(gamepad1.a);
+        if(gamepad1.a){
+            thrower.start();
+        }
+        else{
+            thrower.stop();
+        }
     }
 }

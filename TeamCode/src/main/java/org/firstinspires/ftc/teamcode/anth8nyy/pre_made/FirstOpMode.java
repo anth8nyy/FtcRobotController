@@ -3,16 +3,19 @@ package org.firstinspires.ftc.teamcode.anth8nyy.pre_made;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.AprilTagDetectionEx;
-import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.SmartServoEx;
+
+import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.AprilTagDetEx;
+
+import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.DcMotorThrowerMechEx;
 import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.driveTrains.AdvancedArcadeDriveSample;
 
 @Disabled
 @TeleOp
 public class FirstOpMode extends OpMode {
-    AprilTagDetectionEx aprilTag = new AprilTagDetectionEx();
-    SmartServoEx thrower = new SmartServoEx();
+    AprilTagDetEx aprilTag = new AprilTagDetEx();
+    DcMotorThrowerMechEx thrower = new DcMotorThrowerMechEx();
     AdvancedArcadeDriveSample drive = new AdvancedArcadeDriveSample();
+
     @Override
     public void init() {
         thrower.init(hardwareMap);
@@ -20,10 +23,6 @@ public class FirstOpMode extends OpMode {
         drive.init(hardwareMap);
     }
 
-    @Override
-    public void start() {
-        aprilTag.start();
-    }
     @Override
     public void loop() {
         drive.tankDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_trigger);
