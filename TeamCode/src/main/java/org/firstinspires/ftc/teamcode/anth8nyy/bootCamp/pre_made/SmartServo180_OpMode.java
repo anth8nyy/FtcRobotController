@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.pre_made;
+package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.SmartServo180Ex;
+import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples.SmartServo180Ex;
 
 public class SmartServo180_OpMode extends OpMode {
     SmartServo180Ex servo = new SmartServo180Ex();

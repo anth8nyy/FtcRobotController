@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.pre_made;
+package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples.TuningThrower;
+import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples.TuningThrower;
 
 @Disabled
 @TeleOp

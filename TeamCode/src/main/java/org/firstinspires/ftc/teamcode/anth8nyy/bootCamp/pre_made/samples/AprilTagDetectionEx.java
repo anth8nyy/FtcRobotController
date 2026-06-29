@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples;
+package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -9,20 +9,18 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-public class AprilTagDetEx {
-    private static final int    APRILTAG_PIPELINE = 8;       //I have to change this
-    private static final double DISTANCE_SCALE    = 30665.95; // units: centimeters
+public class AprilTagDetectionEx {
     private LLResult lastResult;
     private Pose3D lastBotPose;
     private DcMotorThrowerMechEx thrower;
-    Limelight3A limelight;
+    public Limelight3A limelight;
     private IMU imu;
     private double distance = Double.MAX_VALUE;
 
     public void init(HardwareMap hardwareMap, DcMotorThrowerMechEx thrower){
         this.thrower = thrower;
         limelight = hardwareMap.get(Limelight3A.class,"limelight");
-        limelight.pipelineSwitch(APRILTAG_PIPELINE);
+        limelight.pipelineSwitch(8); //I have to change this
         imu = hardwareMap.get(IMU.class,"imu");
         RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
@@ -36,17 +34,20 @@ public class AprilTagDetEx {
         lastResult = limelight.getLatestResult();
         if (lastResult != null && lastResult.isValid()) {
             lastBotPose = lastResult.getBotpose_MT2();
-            if(lastResult.getTa()>0.00001) {
-                distance = (DISTANCE_SCALE / lastResult.getTa());
-            }
-            else{
-                distance = Double.MAX_VALUE;
-            }
+            distance = getDistance(lastResult.getTa());
         }
-        else {
-            lastBotPose = null;       // tag is gone, clear the pose
-            distance = Double.MAX_VALUE; // and treat distance as unknown
+    }
+    public double getDistance(double ta){
+        if(ta>0.0001){
+            double scale = 30665.95;
+            distance = (scale / ta);
+            return distance;
         }
+        else{
+            distance = Double.MAX_VALUE;
+            return distance;
+        }
+
     }
     public void checkDistance() {
         if (distance>0.2 && distance < 10.0){

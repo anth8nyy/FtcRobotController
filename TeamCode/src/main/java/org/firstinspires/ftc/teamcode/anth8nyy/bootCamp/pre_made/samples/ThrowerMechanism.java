@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.pre_made.samples;
+package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
