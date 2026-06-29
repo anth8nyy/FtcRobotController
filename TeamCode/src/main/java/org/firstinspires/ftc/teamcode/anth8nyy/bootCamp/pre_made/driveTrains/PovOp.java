@@ -17,6 +17,6 @@ public class PovOp extends OpMode {
 
     @Override
     public void loop() {
-        drive.tankDrive(gamepad1.left_stick_y, gamepad1.right_stick_x, 1.0);  // speed multiplier is the max speed I want my robot to have
+        drive.tankDrive(gamepad1.left_stick_y, gamepad1.right_stick_x,gamepad1.right_trigger);  // speed multiplier is the max speed I want my robot to have
     }
 }

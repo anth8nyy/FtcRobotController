@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.util.Range;
 public class PovDriveSample {
     public DcMotor leftDrive   = null;
     public DcMotor  rightDrive  = null;
+    private static final double DEFAULT_SPEED = 0.6;
+    private static final double MAX_SPEED     = 1.0;
+
 
     public void init(HardwareMap hardwareMap){
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
@@ -17,27 +20,25 @@ public class PovDriveSample {
     }
 
     public void tankDrive(double stickY,double stickX ,double speedMultiplier){
-        double left;
-        double right;
-        double drive;
-        double turn;
-        double max;
+        double maxPower = DEFAULT_SPEED + speedMultiplier * (MAX_SPEED - DEFAULT_SPEED);
 
-        drive = stickY;
-        turn  = stickX;
+        // Arcade mix — unchanged from original.
+        double left  = stickY + stickX;
+        double right = stickY - stickX;
 
-        left   = drive + turn;
-        right   = drive - turn;
-
-
-        // Normalize the values so neither exceed +/- 1.0
-        max = Math.max(Math.abs(left), Math.abs(right));
-        if (max > 1.0)
-        {
-            left /= max;
+        // Normalization — unchanged from original.
+        double max = Math.max(Math.abs(left), Math.abs(right));
+        if (max > 1.0) {
+            left  /= max;
             right /= max;
         }
-        leftDrive.setPower(left * speedMultiplier);
-        rightDrive.setPower(right * speedMultiplier);
+
+        // CHANGED: Old code multiplied by speedMultiplier here.
+        //   Now we multiply by maxPower (the mapped value from above).
+        left  *= maxPower;
+        right *= maxPower;
+
+        leftDrive.setPower(left);
+        rightDrive.setPower(right);
     }
 }
