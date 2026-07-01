@@ -7,6 +7,8 @@ public class TankDriveEX {
     /* Declare OpMode members. */
     public DcMotor leftDrive   = null;
     public DcMotor  rightDrive  = null;
+    public double DEFAULT_SPEED = 0.6;
+    public double MAX_SPEED = 1.0;
 
 
     public void init(HardwareMap hardwareMap) {
@@ -25,13 +27,17 @@ public class TankDriveEX {
         // rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void tankDrive(double left_stick_y, double right_stick_y) {
+    public void tankDrive(double left_stick_y, double right_stick_y,double multi) {
+        double maxPower = DEFAULT_SPEED + multi * (MAX_SPEED - DEFAULT_SPEED);
         double left;
         double right;
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forward, so negate it)
         left = -left_stick_y;
         right = -right_stick_y;
+
+        left  *= maxPower;
+        right *= maxPower;
 
         leftDrive.setPower(left);
         rightDrive.setPower(right);
