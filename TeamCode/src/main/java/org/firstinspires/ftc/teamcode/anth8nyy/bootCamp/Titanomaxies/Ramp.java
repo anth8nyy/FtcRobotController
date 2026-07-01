@@ -1,9 +1,7 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.driveTrains;
+package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.Titanomaxies;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.Titanomaxies.Config;
 
 public class Ramp {
     public DcMotorEx ramp;

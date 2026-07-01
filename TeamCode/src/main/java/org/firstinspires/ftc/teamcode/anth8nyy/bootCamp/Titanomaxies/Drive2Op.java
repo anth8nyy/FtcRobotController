@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.driveTrains;
+package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.Titanomaxies;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples.driveTrains.PovDriveSample;
+import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.driveTrains.Ramp;
 import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples.driveTrains.TankDriveEX;
 
 @TeleOp(name = "TELOP_CG1_LITO")

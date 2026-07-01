@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.driveTrains;
+package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.Titanomaxies;
 
 public class Config {
     public static String l_d ="left_drive";
