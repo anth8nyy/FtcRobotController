@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.Titanomaxies.Config;
 public class Ramp {
     public DcMotorEx ramp;
     public void init(HardwareMap hardwareMap){
-        ramp = hardwareMap.get(DcMotorEx.class, Config.ramp);
+        ramp = hardwareMap.get(DcMotorEx.class, Config.shooter);
         ramp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
     }
     public void up_down(boolean y,boolean a){

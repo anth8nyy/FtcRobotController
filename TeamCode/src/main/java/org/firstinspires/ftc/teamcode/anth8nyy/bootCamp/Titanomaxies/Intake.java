@@ -10,12 +10,18 @@ public class Intake {
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
-    public void start(boolean leftBumper){
+    public void start(boolean leftBumper,boolean rightBumper){
         if(leftBumper) {
-            intakeMotor.setPower(-1.0);
+            intakeMotor.setPower(-1);
         }
-        else{
+        else if(rightBumper){
+            intakeMotor.setPower(1);
+        }
+        else {
             intakeMotor.setPower(0.0);
         }
+    }
+    public double getPower(){
+        return intakeMotor.getPower();
     }
 }

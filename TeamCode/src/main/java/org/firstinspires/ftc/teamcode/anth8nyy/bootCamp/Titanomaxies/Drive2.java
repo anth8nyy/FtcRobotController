@@ -18,8 +18,8 @@ public class Drive2 {
         // with 537.7 ticks/rev is ~2800 ticks/sec. Wrong value = curve shaped wrong.
         private static final double MAX_TICKS_PER_SECOND = 2800.0;
 
-        private static double DefaultSpeed = 0.5;
-        private static double MaxSpeed = 1.0;
+        private static double DefaultSpeed = 0.3;
+        private static double MaxSpeed = 0.80;
 
         // DcMotorEx instead of DcMotor so we can read encoder velocity (ticks/sec), not just position
         private DcMotorEx rightMotor;

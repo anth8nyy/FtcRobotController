@@ -1,10 +1,10 @@
 // RobotTeleopMecanumFieldRelativeDrive.java
 package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples.driveTrains;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class RobotTeleopMecanumFieldRelativeDrive {
@@ -12,7 +12,7 @@ public class RobotTeleopMecanumFieldRelativeDrive {
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
-    IMU imu;
+    BHI260IMU imu;
 
     public void init(HardwareMap hardwareMap) {
         frontLeftDrive  = hardwareMap.get(DcMotor.class, "front_left_drive");
@@ -28,15 +28,16 @@ public class RobotTeleopMecanumFieldRelativeDrive {
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        imu = hardwareMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
+        imu = hardwareMap.get(BHI260IMU.class, "imu");
 
-        RevHubOrientationOnRobot orientationOnRobot = new
-                RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        BHI260IMU.Parameters parameters = new BHI260IMU.Parameters(
+                new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                        RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+                )
+        );
+        imu.initialize(parameters);
+        imu.resetYaw();
     }
 
     public void driveFieldRelative(double forward, double right, double rotate) {
@@ -71,6 +72,7 @@ public class RobotTeleopMecanumFieldRelativeDrive {
         backLeftDrive.setPower(maxSpeed   * (backLeftPower   / maxPower));
         backRightDrive.setPower(maxSpeed  * (backRightPower  / maxPower));
     }
+
     public double getHeadingDegrees() {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
