@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.driveTrains;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples.driveTrains.AdvancedArcadeDriveSample;
-
+@Disabled
 @TeleOp(name = "Advanced POV Drive", group = "Drive")
 public class AdvancedArcadeDrive extends OpMode {
 

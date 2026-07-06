@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.Titanomaxies;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+@Disabled
 @TeleOp
 public class rambleTest extends OpMode {
     RumbleFast rumble = new RumbleFast();

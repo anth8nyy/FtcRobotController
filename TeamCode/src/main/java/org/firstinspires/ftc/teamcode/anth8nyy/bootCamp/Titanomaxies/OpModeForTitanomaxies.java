@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.Titanomaxies;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+@Disabled
 @TeleOp(name = "TELOP_CG1_HLEKTRA")
 public class OpModeForTitanomaxies extends OpMode {
     Drive drive     = new Drive();

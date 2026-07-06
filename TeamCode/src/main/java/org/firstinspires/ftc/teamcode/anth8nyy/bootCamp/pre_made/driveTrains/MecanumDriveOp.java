@@ -1,11 +1,12 @@
 // MecanumDriveOp.java
 package org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.driveTrains;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.anth8nyy.bootCamp.pre_made.samples.driveTrains.RobotTeleopMecanumFieldRelativeDrive;
-
+@Disabled
 @TeleOp(name = "Mecanum Field Relative", group = "bootCamp")
 public class MecanumDriveOp extends OpMode {
     RobotTeleopMecanumFieldRelativeDrive drive = new RobotTeleopMecanumFieldRelativeDrive();

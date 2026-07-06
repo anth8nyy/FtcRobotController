@@ -1,46 +1,81 @@
 package org.firstinspires.ftc.teamcode.anth8nyy.GNRT;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Drive {
-    private DcMotor leftDrive, rightDrive;
+    public DcMotorEx leftDrive;
+    public DcMotorEx rightDrive;
 
-    public Drive(HardwareMap hardwareMap) {
-        // map hardware names to your robot config
-        leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
-        rightDrive = hardwareMap.get(DcMotor.class, "rightDrive");
+    private static final double RAMP_TIME_SECONDS = 0.20; // time to go 0 -> full power
+    private static final double MAX_ACCELERATION_PER_SECOND = 1.0 / RAMP_TIME_SECONDS;
 
-        // reverse one side so positive power drives forward on both sides
-        rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+    private double currentLeftPower = 0.0;  // ramped power applied last loop, left side
+    private double currentRightPower = 0.0; // ramped power applied last loop, right side
+
+    public static final double MAX_SPEED = 1.0;
+    public static final double DEFAULT_SPEED = 0.6;
+
+    private final ElapsedTime loopTimer = new ElapsedTime(); // measures real deltaTime between loops
+
+    public void init(HardwareMap hardwareMap) {
+        leftDrive = hardwareMap.get(DcMotorEx.class, Config.Motors.LEFT_DRIVE.hardwareName);
+        rightDrive = hardwareMap.get(DcMotorEx.class, Config.Motors.RIGHT_DRIVE.hardwareName);
+
+        leftDrive.setDirection(Config.Motors.LEFT_DRIVE.direction);
+        rightDrive.setDirection(Config.Motors.RIGHT_DRIVE.direction);
+
+        leftDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        leftDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        loopTimer.reset();
     }
 
-    // sets raw power to each side independently (tank drive)
-    public void tankDrive(double leftPower, double rightPower) {
-        leftDrive.setPower(leftPower);
-        rightDrive.setPower(rightPower);
+    public void drive(double forward, double turn, double speedMultiplier) {
+        double leftTarget = maxPower(forward + turn, -1.0, 1.0);
+        double rightTarget = maxPower(forward - turn, -1.0, 1.0);
+
+        double deltaTime = loopTimer.seconds();
+        loopTimer.reset();
+
+        currentLeftPower = adjustPower(currentLeftPower, leftTarget, MAX_ACCELERATION_PER_SECOND, deltaTime);
+        currentRightPower = adjustPower(currentRightPower, rightTarget, MAX_ACCELERATION_PER_SECOND, deltaTime);
+
+        double maxPower = DEFAULT_SPEED + speedMultiplier * (MAX_SPEED - DEFAULT_SPEED);
+
+        leftDrive.setPower(currentLeftPower * maxPower);
+        rightDrive.setPower(currentRightPower * maxPower);
     }
 
-    // convenience overload with a speed scalar (e.g. for slow mode)
-    public void tankDrive(double leftPower, double rightPower, double speedScale) {
-        leftDrive.setPower(leftPower * speedScale);
-        rightDrive.setPower(rightPower * speedScale);
+    public void povDrive(GamepadEx gamepad) {
+        double forward = gamepad.getLeftStickY();
+        double turn = gamepad.getRightStickX();
+        double speedMultiplier = gamepad.isDown(GamepadEx.Button.RIGHT_BUMPER) ? 1.0 : 0.0;
+
+        drive(forward, turn, speedMultiplier);
     }
 
-    // reads sticks/bumper straight from the gamepad and drives accordingly
-    public void drive(GamepadEx gamepad) {
-        double leftPower = gamepad.getLeftStickY();   // left side power
-        double rightPower = gamepad.getRightStickY(); // right side power
-        double speedScale = gamepad.isDown(GamepadEx.Button.RIGHT_BUMPER) ? 1.0 : 0.6;
-
-        tankDrive(leftPower, rightPower, speedScale);
+    private double maxPower(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
     }
-    public double getLeftPower() {
-        return leftDrive.getPower();
-    }
+    private double adjustPower(double current, double target, double accelerationPerSecond, double deltaTime) {
+        if (deltaTime > 0.1) {
+            deltaTime = 0.1;
+        }
 
-    public double getRightPower() {
-        return rightDrive.getPower();
+        double maxChange = accelerationPerSecond * deltaTime;
+
+        if (current < target) {
+            return Math.min(current + maxChange, target);
+        } else {
+            return Math.max(current - maxChange, target);
+        }
     }
 }
