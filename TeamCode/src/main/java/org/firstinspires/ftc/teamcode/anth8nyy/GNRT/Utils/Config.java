@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.GNRT;
+package org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -32,17 +32,25 @@ public class Config {
         }
     }
     public enum ShooterValues {
-        kV(0.00036),
-        kS(0.06),
-        kP(0.0003),
+        kV(0.00036), //velocity feedforward gain ( Used to sustain a speed you want )
+        kS(0.06), //static friction feedforward gain ( Used to overcome static friction )
+        kP(0.0003), //proportional feedback gain ( used to correct the remaining error between target and actual velocity )
         SHOOTING_VELOCITY(2000),
-        RPM_THRESHOLD(50);
+        RPM_ERROR(50);
         public final double value;
         ShooterValues(double value) {
             this.value = value;
         }
     }
-    public static final String WEBCAM = "wabcam";
+    public enum DriveMotorsValues{
+        kV(1),
+        kS(0.05);
+        public final double value;
+        DriveMotorsValues(double value) {
+            this.value = value;
+        }
+    }
+    public static final String WEBCAM = "webcam";
 }
 
 

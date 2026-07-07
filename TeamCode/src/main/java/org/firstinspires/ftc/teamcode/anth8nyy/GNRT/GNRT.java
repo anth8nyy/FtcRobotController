@@ -4,7 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Brace_Climber;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Drive;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.AprilTagWebCam;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.GamepadEx;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.Rumble;
 
 @Disabled
 @TeleOp(name = "GNRT")
@@ -38,9 +44,9 @@ public class GNRT extends OpMode {
         gamepad.update();
         drive.povDrive(gamepad);
         shooter.gamepadUpdate(gamepad);
-        aprilTagWebCam.refreshDetections();
-        AprilTagDetection id20 = aprilTagWebCam.getTagBySpecificId(20);
-        aprilTagWebCam.updateServoForTag(id20);
+        aprilTagWebCam.refreshDetections(); 
+        //AprilTagDetection id20 = aprilTagWebCam.getTagBySpecificId(20);
+        //aprilTagWebCam.updateServoForTag(id20);
         rumble.update(gamepad);
     }
 }

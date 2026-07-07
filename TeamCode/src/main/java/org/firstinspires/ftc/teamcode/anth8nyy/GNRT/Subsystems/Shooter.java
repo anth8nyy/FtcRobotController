@@ -1,14 +1,18 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.GNRT;
+package org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.Config;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.GamepadEx;
 
 public class Shooter {
     private DcMotorEx left_shooter;
     private DcMotorEx right_shooter;
 
     private double targetVelocity = 0;
-    private boolean shooterState = false;
+    private boolean shooterOff = true;
 
     public void init(HardwareMap hardwareMap) {
         left_shooter = hardwareMap.get(DcMotorEx.class, Config.Motors.LEFT_SHOOTER_MOTOR.hardwareName);
@@ -17,16 +21,16 @@ public class Shooter {
         left_shooter.setDirection(Config.Motors.LEFT_SHOOTER_MOTOR.direction);
         right_shooter.setDirection(Config.Motors.RIGHT_SHOOTER_MOTOR.direction);
 
-        left_shooter.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        right_shooter.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        left_shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right_shooter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     public void gamepadUpdate(GamepadEx gamepad) {
-        if (gamepad.justPressed(GamepadEx.Button.Y)) {
-            shooterState = !shooterState;
+        if (gamepad.justPressed(GamepadEx.Button.B)) {
+            shooterOff = !shooterOff;
         }
 
-        targetVelocity = shooterState ? Config.ShooterValues.SHOOTING_VELOCITY.value : 0;
+        targetVelocity = !shooterOff ? Config.ShooterValues.SHOOTING_VELOCITY.value : 0; // IF - ELSE
         update();
     }
 
@@ -35,14 +39,18 @@ public class Shooter {
     }
 
     public void update() {
-        double kV = Config.ShooterValues.kV.value;
-        double kS = Config.ShooterValues.kS.value;
-        double kP = Config.ShooterValues.kP.value;
+        double power;
+        if (shooterOff) {
+            power = 0;
+        } else {
+            double kV = Config.ShooterValues.kV.value;
+            double kS = Config.ShooterValues.kS.value;
+            double kP = Config.ShooterValues.kP.value;
 
-        double feedForward = (kV * targetVelocity) + kS;
-        double feedBack = (targetVelocity - getVelocity()) * kP;
-
-        double power = feedForward + feedBack;
+            double feedForward = (kV * targetVelocity) + kS;
+            double feedBack = (targetVelocity - getVelocity()) * kP;
+            power = feedForward + feedBack;
+        }
         left_shooter.setPower(power);
         right_shooter.setPower(power);
     }
@@ -54,10 +62,10 @@ public class Shooter {
         return targetVelocity;
     }
     public boolean isReady() {
-        return Math.abs(targetVelocity - getVelocity()) < Config.ShooterValues.RPM_THRESHOLD.value;
+        return Math.abs(targetVelocity - getVelocity()) < Config.ShooterValues.RPM_ERROR.value;
     }
     public void stop() {
-        shooterState = false;
+        shooterOff = true;
         targetVelocity = 0;
     }
 }

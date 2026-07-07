@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.GNRT;
+package org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils;
 
 import android.util.Size;
 
@@ -24,7 +24,7 @@ public class AprilTagWebCam {
     private Telemetry telemetry;
     public void init(HardwareMap hardwareMap,Telemetry telemetry){
         this.telemetry = telemetry;
-        servo = hardwareMap.get(Servo.class,Config.ServoForAprilTag.SERVO.hardwareName);
+        servo = hardwareMap.get(Servo.class, Config.ServoForAprilTag.SERVO.hardwareName);
         servo.setDirection(Config.ServoForAprilTag.SERVO.direction);
 
         aprilTagProcessor = new AprilTagProcessor.Builder()

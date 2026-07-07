@@ -1,7 +1,10 @@
-package org.firstinspires.ftc.teamcode.anth8nyy.GNRT;
+package org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Shooter;
+
 @Disabled
 @TeleOp
 public class TuningTheShooter extends LinearOpMode{
