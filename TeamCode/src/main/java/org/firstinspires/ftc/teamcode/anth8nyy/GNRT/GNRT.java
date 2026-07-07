@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.AprilTagWebCam;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.GamepadEx;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.Rumble;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 @Disabled
 @TeleOp(name = "GNRT")
@@ -43,10 +44,12 @@ public class GNRT extends OpMode {
     public void loop() {
         gamepad.update();
         drive.povDrive(gamepad);
+        intake.start(gamepad);
         shooter.gamepadUpdate(gamepad);
-        aprilTagWebCam.refreshDetections(); 
-        //AprilTagDetection id20 = aprilTagWebCam.getTagBySpecificId(20);
-        //aprilTagWebCam.updateServoForTag(id20);
+        braceClimber.start(gamepad);
+        aprilTagWebCam.refreshDetections();
+        AprilTagDetection id20 = aprilTagWebCam.getTagBySpecificId(20);
+        aprilTagWebCam.updateServoForTag(id20);
         rumble.update(gamepad);
     }
 }

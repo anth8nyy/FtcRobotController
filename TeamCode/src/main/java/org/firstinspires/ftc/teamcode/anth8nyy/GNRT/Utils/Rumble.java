@@ -17,7 +17,7 @@ public class Rumble {
 
     public void update(GamepadEx gamepad) {
         if (!rumbled && timer.seconds() >= RUMBLE_TIME_SECONDS) {
-            gamepad.getGamepad().rumble(1.0, 1.0, 2000); // rumble both sides for 1 second
+            gamepad.getGamepad().rumble(1.0, 1.0, 2500); // rumble both sides for 2.5 second
             rumbled = true;
         }
     }
