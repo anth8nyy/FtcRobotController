@@ -5,6 +5,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Config {
 
+    // Which REGIONAL ALLIANCE this robot is playing for this MATCH. Change this line before
+    // each match (or wherever your team prefers to set it).
+    public static Alliance CURRENT_ALLIANCE = Alliance.RED;
+
+    public enum Alliance {
+        RED, BLUE
+    }
+
     public enum Motors {
         LEFT_DRIVE("left_drive", DcMotorEx.Direction.REVERSE),
         RIGHT_DRIVE("right_drive", DcMotorEx.Direction.FORWARD),
@@ -50,7 +58,20 @@ public class Config {
             this.value = value;
         }
     }
+
+    // -------------------------------- Suppression Unit AprilTags -------------------------------- //
+    // TODO: fill in with the real IDs from https://first.global/fgc/robot-kit/. Per the manual,
+    // each SUPPRESSION UNIT has a front-face tag and a side-face tag.
+    public static final int RED_SUPPRESSION_FRONT_TAG_ID = 1;
+    public static final int RED_SUPPRESSION_SIDE_TAG_ID = 2;
+    public static final int BLUE_SUPPRESSION_FRONT_TAG_ID = 3;
+    public static final int BLUE_SUPPRESSION_SIDE_TAG_ID = 4;
+
+    public static int[] getSuppressionTagIds(Alliance alliance) {
+        return alliance == Alliance.RED
+                ? new int[]{RED_SUPPRESSION_FRONT_TAG_ID, RED_SUPPRESSION_SIDE_TAG_ID}
+                : new int[]{BLUE_SUPPRESSION_FRONT_TAG_ID, BLUE_SUPPRESSION_SIDE_TAG_ID};
+    }
+
     public static final String WEBCAM = "webcam";
 }
-
-

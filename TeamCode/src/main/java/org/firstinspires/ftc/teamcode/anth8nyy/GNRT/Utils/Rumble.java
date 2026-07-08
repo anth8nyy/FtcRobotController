@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Rumble {
     private final ElapsedTime timer = new ElapsedTime();
 
-    // 100 seconds = 1 minute 40 seconds
     private static final double RUMBLE_TIME_SECONDS = 120;
 
     // so we only rumble once, not every loop after the time passes

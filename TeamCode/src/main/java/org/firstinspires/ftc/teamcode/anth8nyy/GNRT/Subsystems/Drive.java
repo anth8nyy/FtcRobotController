@@ -26,10 +26,10 @@ public class Drive {
     public static final double MAX_SPEED = 1.0;
     public static final double DEFAULT_SPEED = 0.6;
 
-    private static final double LEFT_KS = Config.DriveMotorsValues.kS.value;
-    private static final double LEFT_KV = Config.DriveMotorsValues.kV.value;
-    private static final double RIGHT_KS = Config.DriveMotorsValues.kS.value;
-    private static final double RIGHT_KV = Config.DriveMotorsValues.kV.value;
+    private static final double FEEDFORWARD_DEADBAND = 0.01;
+
+    private static final double KS = Config.DriveMotorsValues.kS.value;
+    private static final double KV = Config.DriveMotorsValues.kV.value;
 
     // -------------------------------------- Initialization -------------------------------------- //
 
@@ -52,8 +52,11 @@ public class Drive {
         leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        currentLeftPower = 0.0;
+        currentRightPower = 0.0;
         loopTimer.reset();
     }
+
     // -------------------------------------- Gamepad Input -------------------------------------- //
 
     public void povDrive(GamepadEx gamepad) {
@@ -72,19 +75,18 @@ public class Drive {
         double leftTargetPower = speedRestriction(forward + turn, -1.0, 1.0);
         double rightTargetPower = speedRestriction(forward - turn, -1.0, 1.0);
 
-
         double deltaTime = loopTimer.seconds();
         loopTimer.reset();
 
         currentLeftPower = rampTowardTarget(currentLeftPower, leftTargetPower, deltaTime);
         currentRightPower = rampTowardTarget(currentRightPower, rightTargetPower, deltaTime);
 
-        double speed = DEFAULT_SPEED + speedMultiplier * (MAX_SPEED - DEFAULT_SPEED);
+        double speed = DEFAULT_SPEED + speedRestriction(speedMultiplier, 0.0, 1.0) * (MAX_SPEED - DEFAULT_SPEED);
         double leftPower = currentLeftPower * speed;
         double rightPower = currentRightPower * speed;
 
-        double leftOutput = applyFeedforward(leftPower, LEFT_KS, LEFT_KV);
-        double rightOutput = applyFeedforward(rightPower, RIGHT_KS, RIGHT_KV);
+        double leftOutput = applyFeedforward(leftPower);
+        double rightOutput = applyFeedforward(rightPower);
 
         leftDrive.setPower(leftOutput);
         rightDrive.setPower(rightOutput);
@@ -100,8 +102,8 @@ public class Drive {
     // Moves `current` toward `target`, but never changes it faster than the allowed rate.
     private double rampTowardTarget(double current, double target, double deltaTime) {
 
-        if (deltaTime > 0.1) {
-            deltaTime = 0.1;
+        if (deltaTime > 0.1 || deltaTime <= 0.0) {
+            deltaTime = 0.02; // assume a nominal ~50Hz loop instead of snapping
         }
 
         double maxChangeThisLoop = MAX_ACCELERATION_PER_SECOND * deltaTime;
@@ -112,8 +114,11 @@ public class Drive {
             return Math.max(current - maxChangeThisLoop, target);
         }
     }
-    // Adds static friction compensation (kS) and scales by velocity gain (kV).
-    private double applyFeedforward(double power, double kS, double kV) {
-        return kS * Math.signum(power) + kV * power;
+    private double applyFeedforward(double power) {
+        if (Math.abs(power) < FEEDFORWARD_DEADBAND) {
+            return 0.0;
+        }
+        double output = KS * Math.signum(power) + KV * power;
+        return speedRestriction(output, -1.0, 1.0);
     }
 }

@@ -22,7 +22,12 @@ public class AprilTagWebCam {
     private List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Servo servo;
     private Telemetry telemetry;
-    public void init(HardwareMap hardwareMap,Telemetry telemetry){
+
+    private static final double SERVO_TAG_CLOSE = 1.0;
+    private static final double SERVO_TAG_FAR = 0.0;
+    private static final double RANGE_THRESHOLD_CM = 10;
+
+    public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
         servo = hardwareMap.get(Servo.class, Config.ServoForAprilTag.SERVO.hardwareName);
         servo.setDirection(Config.ServoForAprilTag.SERVO.direction);
@@ -34,32 +39,43 @@ public class AprilTagWebCam {
                 .setDrawCubeProjection(true)
                 .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
                 .build();
+
         VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(hardwareMap.get(WebcamName.class,Config.WEBCAM));
-        builder.setCameraResolution(new Size( 640 ,480));
+        builder.setCamera(hardwareMap.get(WebcamName.class, Config.WEBCAM));
+        builder.setCameraResolution(new Size(640, 480));
         builder.addProcessor(aprilTagProcessor);
 
         visionPortal = builder.build();
     }
+
     public void refreshDetections() {
+        if (aprilTagProcessor == null) {
+            return;
+        }
         detectedTags = aprilTagProcessor.getDetections();
     }
 
     public void updateServoForTag(AprilTagDetection detectedId) {
-        if (detectedId == null || detectedId.ftcPose == null) {
-            servo.setPosition(0.0);
+        if (servo == null) {
             return;
         }
-        servo.setPosition(detectedId.ftcPose.range < 10 ? 1.0 : 0.0);
+        if (detectedId == null || detectedId.ftcPose == null) {
+            servo.setPosition(SERVO_TAG_FAR);
+            return;
+        }
+        servo.setPosition(detectedId.ftcPose.range < RANGE_THRESHOLD_CM ? SERVO_TAG_CLOSE : SERVO_TAG_FAR);
     }
-    public List<AprilTagDetection>getDetectedTags(){
+
+    public List<AprilTagDetection> getDetectedTags() {
         return detectedTags;
     }
-    public void displayDetectionTelemetry(AprilTagDetection detectedId){
-        if (detectedId == null){
+
+    public void displayDetectionTelemetry(AprilTagDetection detectedId) {
+        if (detectedId == null || telemetry == null) {
             return;
         }
         if (detectedId.metadata != null) {
+            telemetry.addData("Detected Tags",getDetectedTags());
             telemetry.addLine(String.format("\n==== (ID %d) %s", detectedId.id, detectedId.metadata.name));
             telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detectedId.ftcPose.x, detectedId.ftcPose.y, detectedId.ftcPose.z));
             telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detectedId.ftcPose.pitch, detectedId.ftcPose.roll, detectedId.ftcPose.yaw));
@@ -69,18 +85,20 @@ public class AprilTagWebCam {
             telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detectedId.center.x, detectedId.center.y));
         }
     }
-    public AprilTagDetection getTagBySpecificId(int id){
-        for (AprilTagDetection detection : detectedTags){
-            if(detection.id == id){
+
+    public AprilTagDetection getTagBySpecificId(int id1,int id2) {
+        for (AprilTagDetection detection : detectedTags) {
+            if (detection.id == id1) {
+                return detection;
+            }else if(detection.id == id2) {
                 return detection;
             }
         }
-        return  null;
+        return null;
     }
-    public void stop () {
-        if(visionPortal != null){
+    public void stop() {
+        if (visionPortal != null) {
             visionPortal.close();
         }
     }
-
 }
