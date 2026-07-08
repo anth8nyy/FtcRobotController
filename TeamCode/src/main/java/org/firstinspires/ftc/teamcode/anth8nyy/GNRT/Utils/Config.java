@@ -39,6 +39,17 @@ public class Config {
             this.direction = direction;
         }
     }
+    public enum ServoForShooting {
+        SERVO_LEFT("servoLeft",Servo.Direction.FORWARD),
+        SERVO_RIGHT("servoRight",Servo.Direction.REVERSE);
+        public final String hardwareName;
+        public final Servo.Direction direction;
+
+        ServoForShooting(String hardwareName, Servo.Direction direction) {
+            this.hardwareName = hardwareName;
+            this.direction = direction;
+        }
+    }
     public enum ShooterValues {
         kV(0.00036), //velocity feedforward gain ( Used to sustain a speed you want )
         kS(0.06), //static friction feedforward gain ( Used to overcome static friction )
@@ -61,7 +72,6 @@ public class Config {
 
     // -------------------------------- Suppression Unit AprilTags -------------------------------- //
     // TODO: fill in with the real IDs from https://first.global/fgc/robot-kit/. Per the manual,
-    // each SUPPRESSION UNIT has a front-face tag and a side-face tag.
     public static final int RED_SUPPRESSION_FRONT_TAG_ID = 1;
     public static final int RED_SUPPRESSION_SIDE_TAG_ID = 2;
     public static final int BLUE_SUPPRESSION_FRONT_TAG_ID = 3;

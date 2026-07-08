@@ -5,14 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.Config;
-import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.GamepadEx;
 
-public class Shooter {
+public class Shooter2 {
     private DcMotorEx left_shooter;
     private DcMotorEx right_shooter;
 
     private double targetVelocity = 0;
-    private boolean shooterOff = true;
 
     public void init(HardwareMap hardwareMap) {
         left_shooter = hardwareMap.get(DcMotorEx.class, Config.Motors.LEFT_SHOOTER_MOTOR.hardwareName);
@@ -23,34 +21,22 @@ public class Shooter {
 
         left_shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_shooter.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        targetVelocity = Config.ShooterValues.SHOOTING_VELOCITY.value;
     }
-
-    public void gamepadUpdate(GamepadEx gamepad) {
-        if (gamepad.justPressed(GamepadEx.Button.B)) {
-            shooterOff = !shooterOff;
-        }
-
-        targetVelocity = !shooterOff ? Config.ShooterValues.SHOOTING_VELOCITY.value : 0; // IF - ELSE
-        update();
-    }
-
     public void setTargetVelocity(double velocity) {
         targetVelocity = velocity;
     }
 
     public void update() {
-        double power;
-        if (shooterOff) {
-            power = 0;
-        } else {
-            double kV = Config.ShooterValues.kV.value;
-            double kS = Config.ShooterValues.kS.value;
-            double kP = Config.ShooterValues.kP.value;
+        double kV = Config.ShooterValues.kV.value;
+        double kS = Config.ShooterValues.kS.value;
+        double kP = Config.ShooterValues.kP.value;
 
-            double feedForward = (kV * targetVelocity) + kS;
-            double feedBack = (targetVelocity - getVelocity()) * kP;
-            power = feedForward + feedBack;
-        }
+        double feedForward = (kV * targetVelocity) + kS;
+        double feedBack = (targetVelocity - getVelocity()) * kP;
+        double power = feedForward + feedBack;
+
         left_shooter.setPower(power);
         right_shooter.setPower(power);
     }
@@ -64,10 +50,4 @@ public class Shooter {
     public boolean isReady() {
         return Math.abs(targetVelocity - getVelocity()) < Config.ShooterValues.RPM_ERROR.value;
     }
-    public void stop() {
-        shooterOff = true;
-        targetVelocity = 0;
-    }
 }
-
-

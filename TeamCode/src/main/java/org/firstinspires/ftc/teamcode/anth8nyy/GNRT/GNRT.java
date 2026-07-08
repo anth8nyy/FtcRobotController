@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Brace_Climber;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Subsystems.TimeToShoot;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.AprilTagWebCam;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.Config;
 import org.firstinspires.ftc.teamcode.anth8nyy.GNRT.Utils.GamepadEx;
@@ -23,8 +24,8 @@ public class GNRT extends OpMode {
     private final Brace_Climber braceClimber = new Brace_Climber();
     private final Rumble rumble = new Rumble();
     private final AprilTagWebCam aprilTagWebCam = new AprilTagWebCam();
+    private final TimeToShoot timeToShoot = new TimeToShoot();
     private final GamepadEx driver = new GamepadEx();
-    private final GamepadEx operator = new GamepadEx();
 
     @Override
     public void init() {
@@ -33,8 +34,8 @@ public class GNRT extends OpMode {
         shooter.init(hardwareMap);
         braceClimber.init(hardwareMap);
         aprilTagWebCam.init(hardwareMap, telemetry);
+        timeToShoot.init(hardwareMap);
         driver.init(gamepad1);
-        operator.init(gamepad2);
     }
 
     // Runs repeatedly while sitting in INIT, before START is pressed - this is the window
@@ -65,8 +66,10 @@ public class GNRT extends OpMode {
 
         drive.povDrive(driver);
         intake.start(driver);
-        shooter.gamepadUpdate(operator);
-        braceClimber.start(operator);
+        shooter.update();
+        braceClimber.start(driver);
+        timeToShoot.start(driver);
+
 
         aprilTagWebCam.refreshDetections();
         AprilTagDetection trackedTag = Config.CURRENT_ALLIANCE == Config.Alliance.RED
@@ -77,7 +80,6 @@ public class GNRT extends OpMode {
         telemetry.update();
 
         rumble.update(driver);
-        rumble.update(operator);
     }
 
     @Override
