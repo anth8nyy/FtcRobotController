@@ -5,6 +5,8 @@ import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class RobotTeleopMecanumFieldRelativeDrive {
@@ -12,7 +14,7 @@ public class RobotTeleopMecanumFieldRelativeDrive {
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
-    BHI260IMU imu;
+    IMU imu;
 
     public void init(HardwareMap hardwareMap) {
         frontLeftDrive  = hardwareMap.get(DcMotor.class, "front_left_drive");
