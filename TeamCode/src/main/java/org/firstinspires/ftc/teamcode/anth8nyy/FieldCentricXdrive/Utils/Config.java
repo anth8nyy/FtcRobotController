@@ -3,15 +3,12 @@ package org.firstinspires.ftc.teamcode.anth8nyy.FieldCentricXdrive.Utils;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-/**
- * Central configuration for the X-Drive drivetrain.
- *     FRONT
- *   fldm \   / frdm
- *          X
- *   bldm /   \ brdm
- *     BACK
-
- */
+// Central configuration for the X-Drive drivetrain: motor names + directions, speeds, deadzone, IMU.
+//        FRONT
+//   FL \       / FR
+//         (X)
+//   BL /       \ BR
+//        BACK
 public class Config {
     public enum Motors {
         FRONT_LEFT("frontLeftDrive", DcMotorEx.Direction.REVERSE),

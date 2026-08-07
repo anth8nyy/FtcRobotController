@@ -1,31 +1,29 @@
-# GNRT-DriveCore — Field-Centric X-Drive
+# GNRT-DriveCore — X-Drive
 
-Initial driving software for the **X-Drive** drivetrain, built for the FTC SDK (Android Studio /
-Java) and following the **FGC Team Greece Coding Standard**.
+Driving software for the **X-Drive** drivetrain, built for the FTC SDK (Android Studio / Java) and
+following the **FGC Team Greece Coding Standard**.
 
 The robot moves omnidirectionally (forward/back, strafe, rotate — simultaneously) using four omni
-wheels mounted at 45°. The `XDrive` subsystem supports **both** control modes and ships with a
-teleop for each:
+wheels mounted at 45°. The `XDrive` subsystem supports **both** control modes, and a single teleop
+switches between them live with the **A** button:
 
-- **Field-centric** (primary deliverable) — "forward" is a fixed field direction (away from the
-  driver), using the Control Hub IMU heading.
-- **Robot-centric** (base mode) — "forward" is where the robot's nose points; the underlying
-  kinematics that field-centric is built on.
+- **Field-centric** — "forward" is a fixed field direction (away from the driver), using the Control
+  Hub IMU heading.
+- **Robot-centric** — "forward" is where the robot's nose points.
 
 ## Layout
 
-Laid out to match the GNRT module: OpModes at the package root, subsystems in `Subsystems/`,
-shared helpers and configuration in `Utils/`.
+Laid out to match the GNRT module: OpMode at the package root, subsystem in `Subsystems/`, shared
+helpers and configuration in `Utils/`.
 
 ```
 TeamCode/src/main/java/org/firstinspires/ftc/teamcode/anth8nyy/FieldCentricXdrive/
-├── XDriveTeleOp.java              # robot-centric teleop (OpMode)
-├── XDriveFieldCentricTeleOp.java  # field-centric teleop (OpMode, IMU)
+├── XDriveFieldCentricTeleOp.java  # the teleop (OpMode) — "X-Drive TeleOp"
 ├── Subsystems/
 │   └── XDrive.java                # X-Drive kinematics + motor control, init(HardwareMap)
 └── Utils/
-    ├── Config.java                # enum hardware names + directions, tunable values, hub orientation
-    └── DriveMath.java             # deadzone, normalisation, clip helpers
+    ├── Config.java                # enum motor names + directions, speeds, deadzone, IMU name
+    └── DriveMath.java             # deadzone + max-abs helpers
 ```
 
 The module is self-contained: drop the `anth8nyy/FieldCentricXdrive/` tree into the `TeamCode` module
@@ -33,13 +31,17 @@ alongside `GNRT` and it compiles on its own.
 
 ## Controls (gamepad 1)
 
-| Input | Robot-centric | Field-centric |
-| --- | --- | --- |
-| Left stick Y | Drive forward / backward | Field forward / backward |
-| Left stick X | Strafe left / right | Field strafe left / right |
-| Right stick X | Rotate | Rotate |
-| Options | — | Reset field heading to current facing |
-| Right bumper (hold) | Slow / precision mode | Slow / precision mode |
+| Input | Action |
+| --- | --- |
+| Left stick Y | Drive forward / backward |
+| Left stick X | Strafe left / right |
+| Right stick X | Rotate |
+| A | Toggle robot-centric / field-centric |
+| Options | Reset field heading to current facing |
+| Right bumper (hold) | Full speed (otherwise normal speed) |
+
+Normal speed is `0.6` (`NORMAL_SPEED`); holding the right bumper opens it up to `1.0` (`MAX_SPEED`).
+The teleop starts in **field-centric**.
 
 ## Docs
 
@@ -53,3 +55,5 @@ alongside `GNRT` and it compiles on its own.
 
 No external libraries. Tunable values live in the `Config` enums (`Utils/Config.java`); edit them
 there and redeploy.
+
+The drive motors use `RUN_USING_ENCODER`, so each one needs its encoder cable connected to move.

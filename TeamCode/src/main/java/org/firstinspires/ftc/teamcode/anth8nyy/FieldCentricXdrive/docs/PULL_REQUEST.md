@@ -1,4 +1,4 @@
-# Pull Request — Add Field-Centric X-Drive Drive System
+# Pull Request — Add X-Drive Drive System
 
 > Copy this into the PR description when opening the PR against `main` in **GNRT-DriveCore**.
 > Branch: `feature/xdrive-field-centric` → `main`.
@@ -6,30 +6,31 @@
 ## Title
 
 ```
-Add Field-Centric X-Drive drive system (subsystem, config, TeleOps)
+Add X-Drive drive system (subsystem, config, toggle TeleOp)
 ```
 
 ## Summary
 
-Implements the initial field-centric driving software for the X-Drive drivetrain (with the
-robot-centric mixing as its base mode), following the FGC Team Greece coding standard and the layout
-of the sibling GNRT module (`Subsystems/` + `Utils/`, OpModes at the package root).
+Implements the driving software for the X-Drive drivetrain — robot-centric and field-centric, with a
+single teleop that toggles between them on the **A** button — following the FGC Team Greece coding
+standard and the layout of the sibling GNRT module (`Subsystems/` + `Utils/`, OpMode at the package
+root).
 
-- `Subsystems/XDrive` — X-Drive kinematics + motor control (robot-centric and field-centric), `init(HardwareMap)`
-- `Utils/Config` — enum hardware names + directions, tunable values, IMU name and hub orientation
-- `Utils/DriveMath` — deadzone, normalisation and clip helpers
-- `XDriveTeleOp` — robot-centric gamepad-1 teleop (`OpMode`)
-- `XDriveFieldCentricTeleOp` — field-centric gamepad-1 teleop (`OpMode`, IMU)
+- `Subsystems/XDrive` — X-Drive kinematics + motor control (robot-centric and field-centric), the
+  `drive(gamepad, telemetry)` driver entry point, `init(HardwareMap)`
+- `Utils/Config` — enum motor names + directions, tunable values (`NORMAL_SPEED`, `MAX_SPEED`,
+  `INPUT_DEADZONE`), IMU name
+- `Utils/DriveMath` — `applyDeadzone` + `maxAbs` helpers
+- `XDriveFieldCentricTeleOp` — the gamepad-1 teleop ("X-Drive TeleOp"); **A** toggles the mode
 
 Full design notes: `docs/FieldCentric-XDrive.md`.
 
 ## Acceptance criteria
 
-- [x] Field-centric X-Drive implemented (ticket title) — IMU heading + reset-heading control
-- [x] Robot-centric X-Drive implemented (base mode / body criterion #1)
+- [x] Field-centric X-Drive implemented — IMU heading + reset-heading control
+- [x] Robot-centric X-Drive implemented (base mode) with A-button toggle
 - [x] Correct 4-motor kinematics (mixing + normalisation, derivation documented)
 - [x] Follows the GNRT module architecture (package layout, enum `Config`, `init(HardwareMap)`)
-- [x] Uses team interfaces / utilities / coding standard
 - [x] Clean, modular, documented code
 - [ ] **Tested on the real robot** — run the bring-up checklist (`docs/FieldCentric-XDrive.md` §4)
       and paste the results here before requesting review
@@ -38,10 +39,12 @@ Full design notes: `docs/FieldCentric-XDrive.md`.
 ## Test evidence (fill in)
 
 - Motor directions verified: …
-- Forward / strafe / turn behave correctly: …
-- Slow mode + telemetry verified: …
+- Forward / strafe / rotate behave correctly: …
+- A-toggle (robot ↔ field-centric), boost (right bumper), and telemetry verified: …
 
 ## Reviewer notes
 
-- Confirm the `Subsystem` interface choice, or point me at the base-repo equivalent (see design doc §5).
-- Confirm the `fldm/frdm/bldm/brdm` hardware IDs match our Driver Station configuration.
+- Confirm the `frontLeftDrive` / `frontRightDrive` / `backLeftDrive` / `backRightDrive` hardware names
+  match our Driver Station configuration.
+- Confirm the hub orientation in `XDrive.init` (`UP` / `LEFT`) matches our Control Hub mounting.
+- Drive motors use `RUN_USING_ENCODER` — confirm all four encoders are wired.
